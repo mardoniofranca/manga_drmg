@@ -8,7 +8,7 @@ include("lib.jl")
 ITensors.space(::SiteType"S=1/2") = 2
 
 let
-    N=14;  @show N
+    N=8;  @show N
     J=1.0; D=0; E=0
     p=Int(N/2+1)
     @show p
@@ -40,29 +40,27 @@ let
 
 
 
-for i in 1:1:360
-    println(i)
-    theta = deg2rad(i)
+    for i in 1:1:360
+        println(i)
+        theta = deg2rad(i)
 
-    println("DMRG_BASE")
-    J_1 = J * cos(theta)
-    J_2 = J * sin(theta)
-    println("J_1, J_2: ", J_1, ", ", J_2)
-    @show h0
-    H = Set_Hamiltonian(N, J_1, J_2, D, E, h0, sites)
-    energy_base, psi_base = dmrg(H, psi0; nsweeps, eigsolve_krylovdim=3)
-    entropy = VN_entropy(psi_base, p)
-    println("")
-    println("Theta: ", theta_g[index], " | Energy: ", energy_base, " | Entropy: ", entropy)
-    println("")
-    data = string(i, ";", theta_g[index], ";", energy_base, ";", entropy)
-    println(data)
-    open("data/resultados.dat", "a") do io
-        println(io, data) # Corrigido para escrever a linha de dados
+        println("DMRG_BASE")
+        J_1 = J * cos(theta)
+        J_2 = J * sin(theta)
+        println("J_1, J_2: ", J_1, ", ", J_2)
+        @show h0
+        H = Set_Hamiltonian(N, J_1, J_2, D, E, h0, sites)
+        energy_base, psi_base = dmrg(H, psi0; nsweeps, eigsolve_krylovdim=3)
+        entropy = VN_entropy(psi_base, p)
+        println("")
+        println("Theta: ", theta_g[index], " | Energy: ", energy_base, " | Entropy: ", entropy)
+        println("")
+        data = string(i, ";", theta_g[index], ";", energy_base, ";", entropy)
+        println(data)
+        open("data/resultados.dat", "a") do io
+            println(io, data) # Corrigido para escrever a linha de dados
+        end
+        
     end
-    
-end
-
-
 
 end
