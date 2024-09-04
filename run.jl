@@ -65,24 +65,4 @@ end
 
 
 
-for theta in theta_list
-    println("DMRG_BASE")
-    J_1 = J * cos(theta)
-    J_2 = J * sin(theta)
-    println("J_1, J_2: ", J_1, ", ", J_2)
-    @show h0
-    H = Set_Hamiltonian(N, J_1, J_2, D, E, h0, sites)
-    energy_base, psi_base = dmrg(H, psi0; nsweeps, eigsolve_krylovdim=3)
-    entropy = VN_entropy(psi_base, p)
-    println("")
-    println("Theta: ", theta_g[index], " | Energy: ", energy_base, " | Entropy: ", entropy)
-    println("")
-    data = string(index, ";", theta_g[index], ";", energy_base, ";", entropy)
-    println(data)
-    open("data/resultados.dat", "a") do io
-        println(io, data) # Corrigido para escrever a linha de dados
-    end
-    index += 1
-end
-
 end
